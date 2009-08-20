@@ -40,32 +40,21 @@ class Person(DirectObject):
 
     def walk(self,task):
 
+        elapsed = globalClock.getDt()
+
         #roda o sprite em seu propio eixo
-        rot = self.person.getH()
-        if (rot != 180):
-            if (self.state_key['right'] == 1):
-                rot += self.state_key['speed']
-            elif (self.state_key['left'] == 1):
-                rot -= self.state_key['speed']
-        else:
-            if (self.state_key['right'] == 1):
-                rot = - (179 - self.state_key['speed'])
-            elif (self.state_key['left'] == 1):
-                rot = (179 - self.state_key['speed'])
-            
-        self.person.setH(rot)
+        if (self.state_key['left']!=0):
+            self.person.setH(self.person.getH() + ((elapsed*300) * self.state_key['speed'] ))
+        if (self.state_key['right']!=0):
+            self.person.setH(self.person.getH() - ((elapsed*300) * self.state_key['speed'] ))
+        if (self.state_key['up']!=0):
+            self.person.setY(self.person, -((elapsed*25) * self.state_key['speed'] ))
+        if (self.state_key['down']!=0):
+            self.person.setY(self.person, +((elapsed*25) * self.state_key['speed'] ))
 
         if ((self.state_key['up'] == 1) or (self.state_key['down'] == 1)):
-            backward = self.person.getNetTransform().getMat().getRow3(1)
-            backward.setZ(0)
-            backward.normalize()
             if (not self.state_key['moving']):                
                 self.state_key['moving'] = True
-
-            if (self.state_key['up'] == 1):
-                self.person.setPos(self.person.getPos() - backward*self.state_key['speed'])
-            else:
-                self.person.setPos(self.person.getPos() + backward*self.state_key['speed'])
         else:
             if (self.state_key['moving']):                
                 self.state_key['moving'] = False
