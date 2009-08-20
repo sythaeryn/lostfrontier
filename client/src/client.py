@@ -1,8 +1,6 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+import direct.directbase.DirectStart
+from characterControl import Player
 
-__author__="renatopp"
-__date__ ="$Jul 31, 2009 11:54:46 PM$"
-
-if __name__ == "__main__":
-    print "Hello World";
+if __name__ == '__main__':
+    p = Player()
+    run()
