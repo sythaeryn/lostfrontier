@@ -1,1 +1,0 @@
-c:\Panda3D-1.6.2\python\python.exe __init__.py
