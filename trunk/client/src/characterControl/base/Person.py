@@ -27,7 +27,7 @@ class Person(DirectObject):
         self.personActor.reparentTo(self.person)
         self.personActor.setPos(0,0,1.5)
         self.state_key = {'right':0, 'left':0,'jump': False, 'fall':0,
-                          'speed' : 9, 'up' : 0, 'down': 0}
+                          'speed' : 1, 'up' : 0, 'down': 0, 'moving' : False}
         self.personActor.enableBlend()
         self.personActor.loop('idle')
         self.personActor.loop('run')
@@ -55,9 +55,39 @@ class Person(DirectObject):
             
         self.person.setH(rot)
 
-        
+        if ((self.state_key['up'] == 1) or (self.state_key['down'] == 1)):
+            backward = self.person.getNetTransform().getMat().getRow3(1)
+            backward.setZ(0)
+            backward.normalize()
+            if (not self.state_key['moving']):                
+                self.state_key['moving'] = True
+
+            if (self.state_key['up'] == 1):
+                self.person.setPos(self.person.getPos() - backward*self.state_key['speed'])
+            else:
+                self.person.setPos(self.person.getPos() + backward*self.state_key['speed'])
+        else:
+            if (self.state_key['moving']):                
+                self.state_key['moving'] = False
+
+        self.animation()
 
         return task.cont
+
+    def animation(self):
+        if (self.state_key['moving'] == False) and (self.state_key['jump'] == False):
+            blendAnim = [1.0, 0.0, 0.0]
+        elif (self.state_key['moving'] == True) and (self.state_key['jump'] == False):
+            blendAnim = [0.0, 1.0, 0.0]
+        elif (self.state_key['jump'] == True):
+            blendAnim = [0.0, 0.0, 1.0]
+        else:
+            blendAnim = [1.0, 0.0, 0.0]
+
+        self.personActor.setControlEffect( 'idle', blendAnim[0] )
+        self.personActor.setControlEffect( 'run', blendAnim[1] )
+        self.personActor.setControlEffect( 'jump', blendAnim[2] )
+
 
     def attack(self):
         pass
