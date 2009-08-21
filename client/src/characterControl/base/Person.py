@@ -6,10 +6,12 @@ class Person(DirectObject):
     person = None
     personActor = None
     state_key = None
+    camera = None
 
-    def __init__(self):
+    def __init__(self,cam):
         self.load_char()
         self.catch_events()
+        self.camera = cam        
 
     def catch_events(self):
         pass
@@ -29,7 +31,7 @@ class Person(DirectObject):
         self.personActor.setPos(0,0,1.5)
         self.state_key = {'right':0, 'left':0,'jump': False, 'fall':0,
                           'speed' : 0.8, 'up' : 0, 'down': 0, 'moving' : False,
-                          'walk_right' : 0, 'walk_left' : 0, 'crouch' : 0, 'crouching' : False}
+                          'walk_right' : 0, 'walk_left' : 0, 'crouch' : 0, 'crouching' : False,'aim' : 0}
                           
         self.personActor.enableBlend()
         self.personActor.loop('idle')
@@ -69,7 +71,6 @@ class Person(DirectObject):
                 self.state_key['moving'] = False
 
         self.animation()
-
         return task.cont
 
     def animation(self):
