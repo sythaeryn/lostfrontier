@@ -16,18 +16,20 @@ class Person(DirectObject):
 
     def load_char(self):
         self.person = render.attachNewNode('persona')
+
         self.personActor = Actor('resources/eggs/personagem.egg',
                              {'idle':'resources/eggs/personagem-parado',
                               'run' :'resources/eggs/personagem-correr',
                               'jump':'resources/eggs/personagem-pular'}
                              )
 
-        self.personActor.setScale(.3)
+        #self.personActor.setScale(.3)
         self.personActor.loop('idle')
         self.personActor.reparentTo(self.person)
         self.personActor.setPos(0,0,1.5)
         self.state_key = {'right':0, 'left':0,'jump': False, 'fall':0,
-                          'speed' : 0.8, 'up' : 0, 'down': 0, 'moving' : False}
+                          'speed' : 0.8, 'up' : 0, 'down': 0, 'moving' : False,
+                          'walk_right' : 0, 'walk_left' : 0}
         self.personActor.enableBlend()
         self.personActor.loop('idle')
         self.personActor.loop('run')
@@ -51,6 +53,11 @@ class Person(DirectObject):
             self.person.setY(self.person, -((elapsed*25) * self.state_key['speed'] ))
         if (self.state_key['down']!=0):
             self.person.setY(self.person, +((elapsed*25) * self.state_key['speed'] ))
+        if (self.state_key['walk_right'] != 0):
+            self.person.setX(self.person, + ((elapsed*25) * self.state_key['speed'] ))
+        if (self.state_key['walk_left'] != 0):
+            self.person.setX(self.person, - ((elapsed*25) * self.state_key['speed'] ))
+
 
         if ((self.state_key['up'] == 1) or (self.state_key['down'] == 1)):
             if (not self.state_key['moving']):                
