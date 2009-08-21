@@ -29,7 +29,8 @@ class Person(DirectObject):
         self.personActor.setPos(0,0,1.5)
         self.state_key = {'right':0, 'left':0,'jump': False, 'fall':0,
                           'speed' : 0.8, 'up' : 0, 'down': 0, 'moving' : False,
-                          'walk_right' : 0, 'walk_left' : 0}
+                          'walk_right' : 0, 'walk_left' : 0, 'crouch' : 0, 'crouching' : False}
+                          
         self.personActor.enableBlend()
         self.personActor.loop('idle')
         self.personActor.loop('run')
@@ -39,6 +40,7 @@ class Person(DirectObject):
         self.person.setH(0)
 
         taskMgr.add( self.walk, 'movePerson' )
+        taskMgr.add( self.crouch, 'crouchPerson')
 
     def walk(self,task):
 
@@ -71,18 +73,21 @@ class Person(DirectObject):
         return task.cont
 
     def animation(self):
-        if (self.state_key['moving'] == False) and (self.state_key['jump'] == False):
-            blendAnim = [1.0, 0.0, 0.0]
+        if (self.state_key['crouching'] == True):
+            blendAnim = [0, 0, 0, 1.0]
+        elif (self.state_key['moving'] == False) and (self.state_key['jump'] == False):
+            blendAnim = [1.0, 0.0, 0.0, 0.0]
         elif (self.state_key['moving'] == True) and (self.state_key['jump'] == False):
-            blendAnim = [0.0, 1.0, 0.0]
+            blendAnim = [0.0, 1.0, 0.0, 0.0]
         elif (self.state_key['jump'] == True):
-            blendAnim = [0.0, 0.0, 1.0]
+            blendAnim = [0.0, 0.0, 1.0, 0.0]
         else:
-            blendAnim = [1.0, 0.0, 0.0]
+            blendAnim = [1.0, 0.0, 0.0, 0.0]
 
         self.personActor.setControlEffect( 'idle', blendAnim[0] )
         self.personActor.setControlEffect( 'run', blendAnim[1] )
         self.personActor.setControlEffect( 'jump', blendAnim[2] )
+        self.personActor.setControlEffect( 'jump', blendAnim[3] )
 
 
     def attack(self):
@@ -97,6 +102,13 @@ class Person(DirectObject):
     def shoot(self):
         pass
 
-    def crouch(self):
-        pass
+    def crouch(self, task):
+        if self.state_key['crouch'] == 1:
+            self.state_key['crouching'] = True
+        else:
+            self.state_key['crouching'] = False
+
+        self.animation()
+
+        return task.cont
     
