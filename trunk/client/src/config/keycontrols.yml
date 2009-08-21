@@ -2,6 +2,7 @@
 ---
 #Attack
 melee_attack_key: mouse1
+aim_key: o
 
 #Moving
 up_key: w
