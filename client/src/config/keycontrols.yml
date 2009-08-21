@@ -1,6 +1,9 @@
 ## YAML Template.
 ---
-attack_key: mouse1
+#Attack
+melee_attack_key: mouse1
+
+#Moving
 up_key: w
 down_key: s
 left_key: a
@@ -8,3 +11,4 @@ right_key: d
 walk_left_key: q
 walk_right_key: e
 jump_key: space
+crouch_key: control
