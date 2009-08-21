@@ -1,2 +1,10 @@
 ## YAML Template.
 ---
+attack_key: mouse1
+up_key: w
+down_key: s
+left_key: a
+right_key: d
+walk_left_key: q
+walk_right_key: e
+jump_key: space
