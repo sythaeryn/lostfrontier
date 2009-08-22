@@ -1,6 +1,7 @@
 from base.Person import Person
 from os import sep
 import yaml
+from characterControl.Camera import Camera
 
 # Pega as teclas do arquivo de configuracao
 configure_path = "config"+sep+"keycontrols.yml"
@@ -8,6 +9,13 @@ ymlfile = open(configure_path).read()
 keyconfig = yaml.load(ymlfile)
 
 class Player(Person,object):
+
+    smoth_mov = False
+    camera = None
+
+    def __init__(self):
+        super(Player, self).__init__()
+        self.camera = Camera(self.person)
 
     def catch_events(self):
         #Caputra entrada dos teclados para rotacao
@@ -39,11 +47,23 @@ class Player(Person,object):
     def adj_cam(self,task):
 
         if (self.state_key['aim'] == 0):
-            self.camera.cam_follow(self.person,30,3)
-        else:
-            self.camera.cam_follow(self.person,10,3,-10)
 
-        self.camera.look(self.person)
+            if (self.smoth_mov):
+                self.camera.set_cam_pos(0.0,30.0,3.0)
+                self.smoth_mov = False
+            else:
+                self.camera.cam_follow(30.0,3.0)
+                self.camera.look(self.person)
+            
+        else:
+            if ( not self.smoth_mov):
+
+                self.camera.set_cam_pos(-5.0,20.0,10.0)
+                self.smoth_mov = True
+
+            else:
+                self.camera.cam_follow(20.0,10.0,-5.0)
+        
         return task.cont
 
     def change_state(self, key, value):
