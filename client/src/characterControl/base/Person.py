@@ -5,13 +5,11 @@ class Person(DirectObject):
 
     person = None
     personActor = None
-    state_key = None
-    camera = None
+    state_key = None    
 
-    def __init__(self,cam):
+    def __init__(self):
         self.load_char()
         self.catch_events()
-        self.camera = cam        
 
     def catch_events(self):
         pass
@@ -58,9 +56,9 @@ class Person(DirectObject):
         if (self.state_key['down']!=0):
             self.person.setY(self.person, +((elapsed*25) * self.state_key['speed'] ))
         if (self.state_key['walk_right'] != 0):
-            self.person.setX(self.person, + ((elapsed*25) * self.state_key['speed'] ))
-        if (self.state_key['walk_left'] != 0):
             self.person.setX(self.person, - ((elapsed*25) * self.state_key['speed'] ))
+        if (self.state_key['walk_left'] != 0):
+            self.person.setX(self.person, + ((elapsed*25) * self.state_key['speed'] ))
 
 
         if ((self.state_key['up'] == 1) or (self.state_key['down'] == 1)):
