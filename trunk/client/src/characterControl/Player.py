@@ -5,18 +5,21 @@ import math
 from characterControl.Camera import Camera
 
 # Pega as teclas do arquivo de configuracao
-configure_path = "config"+sep+"keycontrols.yml"
-ymlfile = open(configure_path).read()
-keyconfig = yaml.load(ymlfile)
+configure_path = "config"+sep
+ymlfile_keys = open(configure_path+"keycontrols.yml").read()
+keyconfig = yaml.load(ymlfile_keys)
+
+ymlfile_conf = open(configure_path+"game_conf.yml").read()
+gameconf = yaml.load(ymlfile_conf)
 
 class Player(Person,object):
 
     smoth_mov = False
     camera = None
-    sensivity_x = 0.1
+    sensivity_x = gameconf['sensivity_x']
     lastX = 0
     lastY = 0
-    sensivity_y = 5
+    sensivity_y = gameconf['sensivity_y']
 
     def __init__(self):
         super(Player, self).__init__()
@@ -45,22 +48,29 @@ class Player(Person,object):
         self.accept( keyconfig['walk_left_key']+'-up', self.change_state, ['walk_left',0] )
         self.accept( keyconfig['walk_right_key']+'-up', self.change_state, ['walk_right',0] )
 
+        self.accept( 'wheel_up', self.adj_zoom, [1] )
+        self.accept( 'wheel_down', self.adj_zoom, [-1] )
+
     def load_char(self):
         super(Player, self).load_char()
         taskMgr.add( self.adj_cam, 'adjustCamera')
+
+    def adj_zoom(self,value):
+        if (((gameconf['zoom'] < gameconf['zoom_limit_up']) and (value > 0)) or ((gameconf['zoom'] > gameconf['zoom_limit_down']) and (value < 0))):
+            gameconf['zoom'] += value
 
     def adj_cam(self,task):
 
         if (self.state_key['aim'] == 0):
 
             if (self.smoth_mov):
-                self.state_key['speed_side'] = 0.8
-                self.camera.set_cam_pos(0.0,30.0,3.0)
+                self.state_key['speed_side'] = gameconf['speed_side_keys']
+                self.camera.set_cam_pos(0.0,gameconf['zoom'],gameconf['height'])
                 self.smoth_mov = False
                 self.change_state('right', 0)
                 self.change_state('left', 0)
             else:
-                self.camera.cam_follow(30.0,3.0)
+                self.camera.cam_follow(gameconf['zoom'],gameconf['height'])
                 self.camera.look(self.person)
             
         else:
@@ -79,12 +89,13 @@ class Player(Person,object):
                         base.camera.setP(base.camera.getP() + (posy - self.lastY) * self.sensivity_y)
                         self.lastY = posy
 
-                    if (self.lastX != posx):
-                        self.state_key['speed_side'] = math.fabs(posx)
+                    if (self.lastX != posx):                        
                         if (posx > (0 + self.sensivity_x)):
+                            self.state_key['speed_side'] = gameconf['speed_side_mouse']
                             self.change_state('right', 1)
                             self.change_state('left', 0)
                         elif (posx < (0 - self.sensivity_x)):
+                            self.state_key['speed_side'] = gameconf['speed_side_mouse']
                             self.change_state('right', 0)
                             self.change_state('left', 1)
                         else:

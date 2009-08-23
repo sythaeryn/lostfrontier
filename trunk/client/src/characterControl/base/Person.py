@@ -27,9 +27,13 @@ class Person(DirectObject):
         self.personActor.loop('idle')
         self.personActor.reparentTo(self.person)
         self.personActor.setPos(0,0,1.5)
-        self.state_key = {'right':0, 'left':0,'jump': False, 'fall':0,
-                          'speed_walk' : 0.8, 'speed_side' : 0.8,'up' : 0, 'down': 0, 'moving' : False,
-                          'walk_right' : 0, 'walk_left' : 0, 'crouch' : 0, 'crouching' : False,'aim' : 0}
+        self.state_key = {
+                            'right':0, 'left':0,'jump': False, 'fall':0,
+                            'speed_walk' : 0.8, 'speed_side' : 0.8,'up' : 0,
+                            'down': 0, 'moving' : False, 'walk_right' : 0,
+                            'walk_left' : 0, 'crouch' : 0,'crouching' : False,
+                            'aim' : 0
+                         }
                           
         self.personActor.enableBlend()
         self.personActor.loop('idle')
