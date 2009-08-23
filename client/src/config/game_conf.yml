@@ -1,0 +1,15 @@
+## YAML Template.
+---
+#speeds
+speed_side_keys: 0.8
+speed_side_mouse: 0.2
+
+#camera distance
+zoom: 30.0
+zoom_limit_up: 50.0
+zoom_limit_down: 30.0
+height: 3.0
+
+#distances for camera turn
+sensivity_x: 0.9
+sensivity_y: 5
