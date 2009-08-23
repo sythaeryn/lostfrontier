@@ -48,8 +48,8 @@ class Player(Person,object):
         self.accept( keyconfig['walk_left_key']+'-up', self.change_state, ['walk_left',0] )
         self.accept( keyconfig['walk_right_key']+'-up', self.change_state, ['walk_right',0] )
 
-        self.accept( 'wheel_up', self.adj_zoom, [1] )
-        self.accept( 'wheel_down', self.adj_zoom, [-1] )
+        self.accept( 'wheel_down', self.adj_zoom, [1] )
+        self.accept( 'wheel_up', self.adj_zoom, [-1] )
 
     def load_char(self):
         super(Player, self).load_char()
@@ -89,19 +89,19 @@ class Player(Person,object):
                         base.camera.setP(base.camera.getP() + (posy - self.lastY) * self.sensivity_y)
                         self.lastY = posy
 
-                    if (self.lastX != posx):                        
-                        if (posx > (0 + self.sensivity_x)):
+                    if (self.lastX != posx):
+                        if (posx > self.lastX):
                             self.state_key['speed_side'] = gameconf['speed_side_mouse']
                             self.change_state('right', 1)
                             self.change_state('left', 0)
-                        elif (posx < (0 - self.sensivity_x)):
+                        elif (posx < self.lastX):
                             self.state_key['speed_side'] = gameconf['speed_side_mouse']
                             self.change_state('right', 0)
                             self.change_state('left', 1)
-                        else:
-                            self.change_state('right', 0)
-                            self.change_state('left', 0)
                         self.lastX = posx
+                    else:
+                        self.change_state('right', 0)
+                        self.change_state('left', 0)
 
         return task.cont
 
