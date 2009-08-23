@@ -17,9 +17,9 @@ class Camera(DirectObject):
     def look(self,obj):
         base.camera.lookAt(obj)
 
-    def set_cam_pos(self,x,y,z):
+    def set_cam_pos(self,x,y,z,vel = 0.1):
         cam = base.camera
-        cammov = base.camera.posInterval(0.3,Point3(x,y,z), startPos=Point3(cam.getX(),cam.getY(),cam.getZ()))
+        cammov = base.camera.posInterval(vel,Point3(x,y,z), startPos=Point3(cam.getX(),cam.getY(),cam.getZ()))
         camInt = Sequence(cammov, name = "camInt")
         camInt.start()
         #base.camera.setPos(x,y,z)
