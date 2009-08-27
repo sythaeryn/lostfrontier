@@ -1,8 +1,4 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+import comm
 
-__author__="renatopp"
-__date__ ="$Jul 31, 2009 11:42:55 PM$"
-
-if __name__ == "__main__":
-    print "Hello World";
+if __name__ == '__main__':
+    comm.run()
