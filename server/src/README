@@ -1,0 +1,12 @@
+Communication Sequence:
+
+CLIENT -> SERVER
+ @ Connect in server
+ 1. "connect;[login];[password]" ->
+        1.1 "connect;yes"
+        1.2 "connect;no"
+
+ @ Moviment
+ 2. "moviment;key;value"
+
+
