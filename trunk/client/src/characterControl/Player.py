@@ -21,6 +21,8 @@ class Player(Person,object):
     lastY = 0
     sensivity_y = gameconf['sensivity_y']
 
+    moviment_historic = []
+
     def __init__(self):
         super(Player, self).__init__()
         self.camera = Camera(self.person)
@@ -106,4 +108,7 @@ class Player(Person,object):
         return task.cont
 
     def change_state(self, key, value):
+        if key != 'speed_side' and (self.state_key['aim'] == 0 or not (self.state_key['aim'] == 1 and key != 'aim')):
+            self.moviment_historic.insert(0, (str(key), str(value)))
+
         self.state_key[key] = value
